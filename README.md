@@ -1,4 +1,4 @@
-# Fresh Market (a11y_first_aid)
+# Fresh Market - A11y First Aid Workshops
 
 A small grocery demo app built with Flutter 3.47.8, used in the **Accessibility First Aid** workshop.
 
@@ -52,7 +52,7 @@ Warnings for platforms you don't use (for example Chrome or Visual Studio) are f
 <!-- TODO: replace <REPO_URL> with the repository link. -->
 
 ```bash
-git clone <REPO_URL>
+git clone <https://github.com/a11yBlondie/a11y_first_aid.git>
 cd a11y_first_aid
 ```
 

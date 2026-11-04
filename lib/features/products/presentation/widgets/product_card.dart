@@ -23,7 +23,6 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Card is a semantic container, so each card is read on its own, in order.
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Column(
