@@ -70,18 +70,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
         child: ListenableBuilder(
           listenable: _viewModel,
           builder: (context, _) => switch (_viewModel.status) {
-            // TODO(a11y): [M2 Status message]
-            // The spinner is announced with no context, so users don't know
-            // what is loading.
-            // Fix:
-            //
-            //   ProductsStatus.loading => const Center(
-            //     child: CircularProgressIndicator(
-            //       semanticsLabel: 'Loading products',
-            //     ),
-            //   ),
             ProductsStatus.loading => const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                semanticsLabel: 'Loading products',
+              ),
             ),
             ProductsStatus.failure => _ErrorView(
               onRetry: _viewModel.loadProducts,
@@ -156,16 +148,10 @@ class _ErrorView extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // TODO(a11y): [M3 Status message]
-          // The error appears after loading, but nobody tells the screen reader
-          // user about it.
-          // Fix: make it a live region, so it is read as soon as it appears.
-          //
-          //   Semantics(
-          //     liveRegion: true,
-          //     child: const Text('Something went wrong'),
-          //   ),
-          const Text('Something went wrong'),
+          Semantics(
+            liveRegion: true,
+            child: const Text('Something went wrong'),
+          ),
           const SizedBox(height: 12),
           OutlinedButton(onPressed: onRetry, child: const Text('Try again')),
         ],

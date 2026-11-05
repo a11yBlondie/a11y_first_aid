@@ -82,10 +82,11 @@ You should see the Fresh Market home screen with products. 🎉
 ### 6. Run the tests
 
 ```bash
-flutter test
+flutter test test/features
 ```
 
-All tests should pass. Run them again after your fixes to make sure nothing broke.
+These app tests should all pass. The accessibility tests in `test/a11y/` fail until you fix the workshop tasks,
+which is expected. See [Tests](#tests).
 
 ### 7. Turn on the screen reader
 
@@ -133,7 +134,7 @@ Reading order is already correct, so you don't need to fix it.
 2. Each task has an ID, for example `[H1 Heading]`. The comment explains what is wrong and shows the fix as code you can copy.
 3. Make the fix and run the app.
 4. Check the result: turn on **TalkBack** (Android) or **VoiceOver** (iOS), or uncomment `showSemanticsDebugger: true` in `lib/app/app.dart` to see each screen reader stop on screen.
-5. Run `flutter test` to make sure nothing broke.
+5. Run the task's test, for example `flutter test --plain-name "H1:"`, to confirm the fix (see [Tests](#tests)).
 
 Go through the topics in the order above. Each task takes a few minutes.
 
@@ -210,6 +211,45 @@ and `Semantics(liveRegion: true)` for content that appears on screen and stays.
 | `CircularProgressIndicator(semanticsLabel: ...)` | Saying what is loading |
 | `SemanticsService.sendAnnouncement` | Announcing a short message |
 | `Semantics(liveRegion: true)` | Announcing content when it appears or changes |
+
+## Tests
+
+All tests are Flutter **widget tests**. They run on your computer, with no device or emulator needed.
+
+### What we test
+
+| Folder | What it checks |
+|---|---|
+| `test/features/` | **App behaviour**: the basket view model (adding, quantities, totals) and the main flow (add a product, open the basket). |
+| `test/a11y/` | **Accessibility**: one or more tests for each workshop task, named after its ID (`S1`, `A2`, `H3`, `M1`…). |
+
+The accessibility tests check what a screen reader would get, using Flutter's semantics tree:
+
+| File | Tasks | Example checks |
+|---|---|---|
+| `products_a11y_test.dart` | S2–S10, A1, A2, H1, H2 | Button names (tooltips), favourite selected state, merged product details, emojis not read, images decorative, heading levels |
+| `cart_a11y_test.dart` | S1, S8, S11–S17, A3, H3–H5 | Basket badge name and count, stepper labels, label and value read together, "Free" without emoji, heading levels |
+| `status_messages_a11y_test.dart` | M1–M3 | Toast is a live region (Android) and is announced (iOS), spinner says "Loading products", error is a live region |
+| `a11y_test_utils.dart` | | Shared helpers (`expectHeading`, `expectNotSpoken`, `expectImagesDecorative`) |
+
+Before the workshop the accessibility tests fail, because accessibility is missing. Each fix turns its tests green,
+so you can use them to check your progress.
+
+> Tests check the semantics tree, not what a real screen reader says. Always also try your fix with TalkBack or VoiceOver.
+
+### How to run them
+
+```bash
+flutter test                          # all tests
+flutter test test/a11y                # only the accessibility tests
+flutter test test/features            # only the app behaviour tests
+flutter test test/a11y/cart_a11y_test.dart   # one file
+flutter test --plain-name "S1:"       # tests for one task (keep the colon, or "S1" also matches S10–S17)
+flutter test -r expanded              # print the name of every test
+```
+
+In your IDE you can also click ▶ next to a `test`, `testWidgets` or `group`, or use the *Testing* panel (VS Code)
+to run them.
 
 ## Architecture
 

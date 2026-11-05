@@ -84,36 +84,20 @@ class _CartTopBar extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(8, 8, 20, 8),
       child: Row(
         children: [
-          // TODO(a11y): [S11 Semantics]
-          // Icon-only button with no name: the screen reader says only
-          // "button".
-          // Fix: add a tooltip (it becomes the accessible name).
-          //
-          //   IconButton(
-          //     tooltip: 'Back',
-          //     onPressed: onBack,
-          //     icon: const Icon(Icons.arrow_back_rounded),
-          //   ),
           IconButton(
+            tooltip: 'Back',
             onPressed: onBack,
             icon: const Icon(Icons.arrow_back_rounded),
           ),
           const SizedBox(width: 4),
-          // TODO(a11y): [H3 Heading]
-          // The screen title is not a heading, and the emoji is read aloud as
-          // "shopping cart".
-          // Fix: give it heading level 1 (the main title of the screen) and a
-          // clean label.
-          //
-          //   Semantics(
-          //     headingLevel: 1,
-          //     child: Text(
-          //       'Your basket 🛒',
-          //       semanticsLabel: 'Your basket',
-          //       style: Theme.of(context).textTheme.titleLarge,
-          //     ),
-          //   ),
-          Text('Your basket 🛒', style: Theme.of(context).textTheme.titleLarge),
+          Semantics(
+            headingLevel: 1,
+            child: Text(
+              'Your basket 🛒',
+              semanticsLabel: 'Your basket',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ),
         ],
       ),
     );

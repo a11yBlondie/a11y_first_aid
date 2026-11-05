@@ -16,25 +16,18 @@ class CartBadgeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListenableBuilder(
       listenable: viewModel,
-      // TODO(a11y): [S1 Semantics]
-      // Icon-only button with no name. The screen reader says only the badge
-      // number: "2, button".
-      // Fix: add a tooltip that says what the button does and how many items
-      // are in the basket.
-      //
-      //   builder: (context, _) => IconButton(
-      //     tooltip: 'Basket, ${viewModel.itemCount} items',
-      //     onPressed: onPressed,
-      //     icon: ...,
-      //   ),
-      builder: (context, _) => IconButton(
-        onPressed: onPressed,
-        icon: Badge(
-          isLabelVisible: viewModel.itemCount > 0,
-          label: Text('${viewModel.itemCount}'),
-          child: const Icon(Icons.shopping_basket_outlined),
-        ),
-      ),
+      builder: (context, _) {
+        final count = viewModel.itemCount;
+        return IconButton(
+          tooltip: 'Basket, $count ${count == 1 ? 'item' : 'items'}',
+          onPressed: onPressed,
+          icon: Badge(
+            isLabelVisible: count > 0,
+            label: ExcludeSemantics(child: Text('$count')),
+            child: const Icon(Icons.shopping_basket_outlined),
+          ),
+        );
+      },
     );
   }
 }

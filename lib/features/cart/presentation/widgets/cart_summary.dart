@@ -34,38 +34,21 @@ class CartSummary extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // TODO(a11y): [H4 Heading]
-            // "Order summary" looks like a heading but is not announced as one.
-            // Fix: give it heading level 2 (a section inside the screen).
-            //
-            //   Semantics(
-            //     headingLevel: 2,
-            //     child: Text('Order summary', style: textTheme.titleMedium),
-            //   ),
-            Text('Order summary', style: textTheme.titleMedium),
+            Semantics(
+              headingLevel: 2,
+              child: Text('Order summary', style: textTheme.titleMedium),
+            ),
             const SizedBox(height: 12),
             _SummaryRow(
               label: 'Subtotal',
               value: PriceFormatter.format(subtotalCents),
             ),
-            // TODO(a11y): [S16 Semantics]
-            // "Free 🎉" is read as "Free, party popper".
-            // Fix: give _SummaryRow a clean spoken value, e.g. add a
-            // `semanticsValue` parameter and pass it to the value Text:
-            //
-            //   _SummaryRow(
-            //     label: 'Delivery',
-            //     value: deliveryCents == 0 ? 'Free 🎉' : ...,
-            //     semanticsValue: deliveryCents == 0 ? 'Free' : null,
-            //   ),
-            //
-            //   // inside _SummaryRow:
-            //   Text(value, semanticsLabel: semanticsValue, style: style),
             _SummaryRow(
               label: 'Delivery',
               value: deliveryCents == 0
                   ? 'Free 🎉'
                   : PriceFormatter.format(deliveryCents),
+              semanticsValue: deliveryCents == 0 ? 'Free' : null,
             ),
             const DecorativeDivider(),
             _SummaryRow(
@@ -95,11 +78,14 @@ class _SummaryRow extends StatelessWidget {
   const _SummaryRow({
     required this.label,
     required this.value,
+    this.semanticsValue,
     this.emphasized = false,
   });
 
   final String label;
   final String value;
+
+  final String? semanticsValue;
   final bool emphasized;
 
   @override
@@ -107,22 +93,16 @@ class _SummaryRow extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final style = emphasized ? textTheme.titleLarge : textTheme.bodyMedium;
 
-    // TODO(a11y): [S15 Semantics]
-    // Label and value are two separate stops: "Subtotal", then "$6.48". Read
-    // them together: "Subtotal, $6.48".
-    // Fix: wrap the Row in MergeSemantics.
-    //
-    //   child: MergeSemantics(
-    //     child: Row(...),
-    //   ),
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(label, style: style),
-          Text(value, style: style),
-        ],
+      child: MergeSemantics(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(label, style: style),
+            Text(value, semanticsLabel: semanticsValue, style: style),
+          ],
+        ),
       ),
     );
   }

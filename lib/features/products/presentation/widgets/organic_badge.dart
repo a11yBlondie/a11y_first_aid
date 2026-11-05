@@ -13,18 +13,9 @@ class OrganicBadge extends StatelessWidget {
         color: AppColors.organic,
         borderRadius: BorderRadius.circular(8),
       ),
-      // TODO(a11y): [S6 Semantics]
-      // The ✦ symbols are decorative but are read aloud: "four-pointed star,
-      // Organic, four-pointed star".
-      // Fix: give the Text a clean spoken label.
-      //
-      //   child: const Text(
-      //     '✦ Organic ✦',
-      //     semanticsLabel: 'Organic',
-      //     style: ...,
-      //   ),
       child: const Text(
         '✦ Organic ✦',
+        semanticsLabel: 'Organic',
         style: TextStyle(
           fontSize: 11,
           fontWeight: FontWeight.w600,

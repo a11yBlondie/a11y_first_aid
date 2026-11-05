@@ -30,63 +30,39 @@ class CartItemTile extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              // TODO(a11y): [A3 Alt text]
-              // The image has no alt text. The product name is right next to
-              // it, so the image adds no new information.
-              // Fix: mark it as decorative.
-              //
-              //   Image.asset(
-              //     product.imageAsset,
-              //     excludeFromSemantics: true,
-              //     ...
-              //   ),
               child: Image.asset(
                 product.imageAsset,
+                excludeFromSemantics: true,
                 width: 64,
                 height: 64,
                 fit: BoxFit.cover,
               ),
             ),
             const SizedBox(width: 12),
-            // TODO(a11y): [S14 Semantics]
-            // Name, unit and price are three separate stops. Read them as one:
-            // "Red Apples, 1 kg, $5.98".
-            // Fix: wrap the Expanded's child Column in MergeSemantics.
-            //
-            //   Expanded(
-            //     child: MergeSemantics(
-            //       child: Column(...),
-            //     ),
-            //   ),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(product.name, style: theme.textTheme.titleSmall),
-                  Text(product.unit, style: theme.textTheme.bodySmall),
-                  const SizedBox(height: 6),
-                  Text(
-                    PriceFormatter.format(item.totalCents),
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.w800,
+              child: MergeSemantics(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(product.name, style: theme.textTheme.titleSmall),
+                    Text(product.unit, style: theme.textTheme.bodySmall),
+                    const SizedBox(height: 6),
+                    Text(
+                      PriceFormatter.format(item.totalCents),
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        color: theme.colorScheme.primary,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                // TODO(a11y): [S12 Semantics]
-                // Icon-only button with no name.
-                // Fix: add a tooltip that names the product.
-                //
-                //   IconButton(
-                //     tooltip: 'Remove ${product.name}',
-                //     ...
-                //   ),
                 IconButton(
+                  tooltip: 'Remove ${product.name}',
                   visualDensity: VisualDensity.compact,
                   onPressed: onRemove,
                   icon: const Icon(Icons.delete_outline_rounded),
