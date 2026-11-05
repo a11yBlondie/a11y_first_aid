@@ -80,6 +80,17 @@ class _ProductsScreenState extends State<ProductsScreen> {
             //       semanticsLabel: 'Loading products',
             //     ),
             //   ),
+            //
+            // Test it by hand: the spinner shows for less than a second, so
+            // TEMPORARILY make loading slower in lib/main.dart:
+            //
+            //   runApp(FreshMarketApp(dependencies: AppDependencies.mock(
+            //     latency: const Duration(seconds: 10),
+            //   )));
+            //
+            // Turn on TalkBack / VoiceOver and restart the app (hot reload is
+            // not enough). Move to the spinner: you should hear "Loading
+            // products". Undo the change when you're done.
             ProductsStatus.loading => const Center(
               child: CircularProgressIndicator(),
             ),
@@ -165,6 +176,20 @@ class _ErrorView extends StatelessWidget {
           //     liveRegion: true,
           //     child: const Text('Something went wrong'),
           //   ),
+          //
+          // Test it by hand: the mock data never fails, so TEMPORARILY make it
+          // fail in
+          // lib/features/products/data/datasources/product_mock_data_source.dart:
+          //
+          //   Future<List<Map<String, dynamic>>> fetchProducts() async {
+          //     await Future<void>.delayed(latency);
+          //     throw Exception('test'); // TEMP for M3
+          //   }
+          //
+          // Turn on TalkBack / VoiceOver and restart the app. You should hear
+          // "Something went wrong" as soon as it appears, without moving to it.
+          // Tap "Try again": it should be read again. Undo the change when
+          // you're done.
           const Text('Something went wrong'),
           const SizedBox(height: 12),
           OutlinedButton(onPressed: onRetry, child: const Text('Try again')),
